@@ -1,0 +1,17 @@
+{
+  "source": "https://github.com/Positano777/pumpfun-community-tools",
+  "revision": "20916fc2391326e5b9b69b1863c82fac02d1088a",
+  "license": "MIT",
+  "normalization": "CRLF normalized to LF; runtime source otherwise unchanged",
+  "filesSha256": {
+    "core.mjs": "2ccd39bb5079ae9e4eb5c067879c703af8ad27c17d9bbc7e4c6bdcef593eaad7",
+    "cli.mjs": "d75417fc48ef3c15f8945320844687b29fe12a6f7242f4503c72ec584f3423e3",
+    "report.mjs": "440fa255a5766c5a2db080b5ae14a6c3737b2d56f02026bf35c0b5029bbbab97",
+    "LICENSE": "117c2aac98f12e140300d76b49fe07c5e2bc42070e63ebf0990b6994364e3421",
+    "vendor/base-x-LICENSE": "a192bdfbed999ea06e52a3f5a85dd27dfed6ff3ad5a55050b345baba31afb0de",
+    "vendor/bs58-LICENSE": "57efbd615689807b8341d557af0038fae58da7e2831f29f52d02902f657deb25",
+    "vendor/decoders.mjs": "488964259f7936f88841197c4d1d29c3782e2870e556a03d892be33efd08a222",
+    "vendor/provenance.json": "ce527e874d214f9873298dfd440fefa8531032fa4a634cd9eefc54ce641e31a1",
+    "vendor/VTX-Labs-LICENSE": "ad0888106ef2cc2d1191cd3428a541a4996716d78ac25792868db56d54752840"
+  }
+}

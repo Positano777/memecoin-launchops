@@ -1,0 +1,15 @@
+{
+  "profile": "pump-sdk-4.1.0-prefix",
+  "reviewed": "2026-10-22",
+  "officialDocsRevision": "639b87fb45c3adeffa6f7c4a1bf0cb85e392bf22",
+  "referencePackage": "@pump-fun/pump-sdk",
+  "version": "4.1.0",
+  "registryTarball": "https://registry.npmjs.org/@pump-fun/pump-sdk/-/pump-sdk-4.1.0.tgz",
+  "registryIntegrity": "sha512-bjxHqUFgC6mcltooQZBbfIrmNBXeiCQNXGhEFPGaOSOCG47vuos153uAbIRL4dESa+6IaVodYUvIMWvgm9DV1w==",
+  "artifactIntegrityVerified": true,
+  "referenceOnlyNotRedistributed": true,
+  "idlFileSha256": {
+    "pump.json": "7616681ea557975f9f623ac211080f22a93060781eaf4765b0a488d980997207",
+    "pump_amm.json": "b7d8c57a4d9c4dd0109a9ab893052352333252d4eedced10ac091d4d66cab89b"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@positano777/memecoin-launchops",
+  "version": "0.1.0-preview.1",
+  "private": true,
+  "description": "Read-only launch checks, lifecycle observations, and transaction receipts for Pump coins",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "launchops": "node bin/launchops.mjs"
+  },
+  "dependencies": {
+    "@solana/web3.js": "1.98.4"
+  }
+}

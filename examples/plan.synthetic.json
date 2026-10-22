@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "network": "mainnet-beta",
+  "route": "pumpfun",
+  "name": "Synthetic Community",
+  "symbol": "SYNTH",
+  "metadataUri": "ipfs://bafySyntheticExample/metadata.json",
+  "creator": "9dSCvzxaotuceYQ7Bu7bKxkBrERZRivwrLWPLa2b9CF7",
+  "payer": "GM83TpUmadHPoEy3MhPQquuyrrvjQQfxwhPPkRHjKAMS",
+  "mint": "2HfZPEuc9b8ujLaJ3HEXFPhSCQQvmQBB92W5HegvTNey",
+  "tokenProgram": "token2022",
+  "quoteAsset": "SOL",
+  "mayhemMode": false,
+  "cashback": false,
+  "holderRewards": false,
+  "creatorFeeBps": 0,
+  "budgetLamports": "10000000"
+}
