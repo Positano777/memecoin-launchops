@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "bundler": "esbuild 0.28.2",
+  "packages": [
+    {
+      "name": "@noble/curves@1.9.7",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@noble/hashes@1.8.0",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@positano777/memecoin-launchops@0.3.0-preview.1",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@solana/buffer-layout@4.0.1",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@solana/codecs-core@2.3.0",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@solana/codecs-numbers@2.3.0",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@solana/errors@2.3.0",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "@solana/web3.js@1.98.4",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "base-x@3.0.11",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE.md"
+      ]
+    },
+    {
+      "name": "base64-js@1.5.1",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "bn.js@5.2.5",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "borsh@0.7.0",
+      "license": "Apache-2.0",
+      "licenseFiles": [
+        "LICENSE-APACHE",
+        "LICENSE-MIT.txt"
+      ]
+    },
+    {
+      "name": "bs58@4.0.1",
+      "license": "MIT",
+      "licenseFiles": [
+        "README.md"
+      ]
+    },
+    {
+      "name": "buffer@6.0.3",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "eventemitter3@5.0.4",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "ieee754@1.2.1",
+      "license": "BSD-3-Clause",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "jayson@4.3.0",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "rpc-websockets@9.3.9",
+      "license": "LGPL-3.0-only",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "safe-buffer@5.2.1",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE"
+      ]
+    },
+    {
+      "name": "superstruct@2.0.2",
+      "license": "MIT",
+      "licenseFiles": [
+        "License.md"
+      ]
+    },
+    {
+      "name": "text-encoding-utf-8@1.0.2",
+      "licenseFiles": [
+        "LICENSE.md"
+      ]
+    },
+    {
+      "name": "uuid@8.3.2",
+      "license": "MIT",
+      "licenseFiles": [
+        "LICENSE.md"
+      ]
+    }
+  ],
+  "filesSha256": {
+    "app.js": "3cae89d5d3bfa9d4e9990d921f6591c01007d5ed72fc5d34b436be1f4118bdb8",
+    "index.html": "7969a5d56f33f46701c3f996797a489b6eda5ef74c760135ed6d0c2fbb85f8ca",
+    "styles.css": "b2d72d2fb3ad9e26ab372c124dbc92e2356ee545501daa4daf0c7bbcd483a472",
+    "licenses.txt": "0d535df0974dc04aaf9be80a83f9a9c77ef141247f8916fc7b1b5540f2dc9e36",
+    "favicon.svg": "928bb10d5a6ec6336fa00735dee83d8ecf8cee82e63fe18ea5b7deb04dec24ed"
+  }
+}

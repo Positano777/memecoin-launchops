@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://api.mainnet-beta.solana.com; img-src 'self'; base-uri 'none'; form-action 'none'; frame-src 'none'"
+    />
+    <meta
+      name="description"
+      content="Inspect Pump launch lifecycle, creator fee balances, and transaction receipts. Read-only open-source tools from Positano777."
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <title>LaunchOps — a clearer view of your launch</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to dashboard</a>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="LaunchOps dashboard"
+        ><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+          <rect width="30" height="30" rx="8" fill="#254e40" />
+          <path
+            d="M8 21V14M15 21V8M22 21V11"
+            stroke="#c5dfd1"
+            stroke-width="3"
+            stroke-linecap="round"
+          /></svg
+        ><span>LaunchOps</span></a
+      ><span class="byline">by Positano777</span>
+      <nav aria-label="Project links">
+        <a
+          href="https://github.com/Positano777/memecoin-launchops"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Source on GitHub <span aria-hidden="true">↗</span></a
+        ><span class="preview">Developer preview</span>
+      </nav>
+    </header>
+    <main id="main">
+      <div class="heading">
+        <div>
+          <h1>A clearer view of your launch.</h1>
+          <p>Follow the curve. Understand the fees. Keep the receipts.</p>
+        </div>
+        <span class="network"><i aria-hidden="true"></i>Solana mainnet</span>
+      </div>
+      <div id="tablist" class="tabs" role="tablist" aria-label="Tools">
+        <button
+          id="overview-tab"
+          data-tab="overview"
+          role="tab"
+          aria-controls="overview-panel"
+          aria-selected="true"
+        >
+          Launch overview</button
+        ><button
+          id="receipt-tab"
+          data-tab="receipt"
+          role="tab"
+          aria-controls="receipt-panel"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          Transaction receipt
+        </button>
+      </div>
+      <section
+        id="overview-panel"
+        data-panel="overview"
+        role="tabpanel"
+        aria-labelledby="overview-tab"
+      >
+        <div class="workspace">
+          <aside class="inspector">
+            <h2>Inspect a mint</h2>
+            <p class="subtle">Public accounts. No wallet connection.</p>
+            <form id="mint-form">
+              <label for="mint">Token mint address</label
+              ><input
+                id="mint"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                placeholder="Paste a public Solana mint"
+              /><button id="inspect" class="primary" type="submit">
+                Inspect mint
+              </button>
+            </form>
+            <div class="or"><span>or start here</span></div>
+            <div class="secondary-actions">
+              <button id="demo" type="button" class="secondary">
+                Try example</button
+              ><button id="import" type="button" class="secondary">
+                Import accounts
+              </button>
+            </div>
+            <input
+              id="account-file"
+              type="file"
+              accept=".json,application/json"
+              hidden
+            />
+            <p class="privacy">
+              Live inspection sends public account addresses to Solana’s public
+              RPC. Imported files stay in this browser tab. No keys, signing,
+              analytics, or browser storage.
+            </p>
+            <div class="scope-note">
+              <h3>Evidence, with its limits</h3>
+              <p>
+                This is a snapshot of supported accounts, not complete history.
+                A pool observation does not prove liquidity, tradability, or
+                token safety.
+              </p>
+              <a
+                href="https://github.com/Positano777/memecoin-launchops/blob/main/docs/FEES.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Read the coverage notes</a
+              >
+            </div>
+          </aside>
+          <div class="analysis">
+            <div class="report-toolbar">
+              <span id="current-source" class="source-label"
+                >No current report</span
+              ><button id="download" class="text-button" type="button" disabled>
+                Download report <span aria-hidden="true">↓</span>
+              </button>
+            </div>
+            <p id="error" class="error" role="alert" hidden></p>
+            <div id="empty" class="empty" hidden>
+              <div class="empty-mark" aria-hidden="true">⌁</div>
+              <h2>Inspect a public mint</h2>
+              <p>
+                Your result will appear here. Try the example or import an
+                account snapshot while public RPC is unavailable.
+              </p>
+            </div>
+            <div id="results" aria-live="polite">
+              <p id="example-note" class="example-note">
+                Example data — synthetic accounts and balances, not a live
+                launch.
+              </p>
+              <section class="lifecycle-panel">
+                <div class="section-top">
+                  <div>
+                    <p class="section-label">Launch lifecycle</p>
+                    <h2 id="lifecycle-label">Unknown</h2>
+                  </div>
+                  <span class="mint-chip" id="mint-short"></span>
+                </div>
+                <p id="lifecycle-description" class="subtle"></p>
+                <ol class="lifecycle">
+                  <li data-step="0">
+                    <span class="dot" aria-hidden="true"></span
+                    ><strong>Bonding curve</strong><span>Curve activity</span>
+                  </li>
+                  <li data-step="1">
+                    <span class="dot" aria-hidden="true"></span
+                    ><strong>Migration</strong><span>Pool pending</span>
+                  </li>
+                  <li data-step="2">
+                    <span class="dot" aria-hidden="true"></span
+                    ><strong>PumpSwap pool</strong><span>Pool observed</span>
+                  </li>
+                </ol>
+                <div class="observation-meta">
+                  <span>Observed slot <b id="slot">Unknown</b></span
+                  ><span>Inspected at <b id="checked-at"></b></span>
+                </div>
+              </section>
+              <section class="fee-section">
+                <div class="section-top">
+                  <div>
+                    <p class="section-label">Creator fees</p>
+                    <h2>Keep the two balances separate.</h2>
+                  </div>
+                  <span id="fee-status" class="small-badge"
+                    >Partial fee coverage</span
+                  >
+                </div>
+                <div class="fee-intro">
+                  <div class="waiting-box">
+                    <span id="waiting-unit" class="subtle"></span
+                    ><strong id="waiting" class="amount">Unknown</strong>
+                    <p id="waiting-note"></p>
+                  </div>
+                  <div class="vault-explanation">
+                    <span class="scope-icon" aria-hidden="true">≠</span>
+                    <h3>Vault balance isn’t this coin’s earnings.</h3>
+                    <p>
+                      A creator’s vault can cover multiple coins. Native SOL
+                      also includes rent. Neither balance is approved as
+                      claimable here.
+                    </p>
+                  </div>
+                </div>
+                <div class="table-scroll">
+                  <table>
+                    <caption class="visually-hidden">
+                      Waiting fees for this mint and separate creator-wide vault
+                      balances
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th>Fee source</th>
+                        <th>This mint: waiting</th>
+                        <th>Creator-wide vault</th>
+                        <th>Recipient route</th>
+                      </tr>
+                    </thead>
+                    <tbody id="fee-rows"></tbody>
+                  </table>
+                </div>
+                <p id="no-fees" class="subtle" hidden>
+                  Fee sources could not be established. Missing evidence stays
+                  unknown.
+                </p>
+                <div class="next-steps">
+                  <h3>Before any claim</h3>
+                  <ul id="actions"></ul>
+                  <span class="subtle"
+                    >Reference steps only. This dashboard constructs and submits
+                    no claim.</span
+                  >
+                </div>
+              </section>
+              <details class="evidence">
+                <summary>Account identity &amp; evidence</summary>
+                <p>Public mint <code id="report-mint"></code></p>
+                <p id="coverage-source"></p>
+                <p>
+                  Polling is a point-in-time view. No history has been
+                  backfilled; counter and vault readings are not a
+                  lifetime-income audit.
+                </p>
+                <pre id="evidence"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="receipt-panel"
+        data-panel="receipt"
+        role="tabpanel"
+        aria-labelledby="receipt-tab"
+        hidden
+      >
+        <div class="receipt-layout">
+          <section class="receipt-input">
+            <p class="section-label">Where did my SOL go?</p>
+            <h2>Make a transaction readable.</h2>
+            <p class="subtle">
+              Inspect wallet changes and see what remains unexplained. Files are
+              processed locally in this tab.
+            </p>
+            <form id="receipt-form">
+              <label for="wallet">Public wallet address</label
+              ><input
+                id="wallet"
+                type="text"
+                spellcheck="false"
+                autocomplete="off"
+                placeholder="Wallet included in this transaction"
+              /><label for="receipt-file">Saved transaction RPC JSON</label
+              ><input
+                id="receipt-file"
+                type="file"
+                accept=".json,application/json"
+              />
+              <p class="input-help">
+                Use getTransaction with compiled encoding <code>json</code>.
+                Maximum file size 5 MB.
+              </p>
+              <button class="primary" type="submit">Create receipt</button
+              ><button id="receipt-demo" class="secondary" type="button">
+                Try receipt example
+              </button>
+            </form>
+            <p id="receipt-error" class="error" role="alert" hidden></p>
+          </section>
+          <section class="receipt-output">
+            <div id="receipt-result" hidden>
+              <span id="receipt-source" class="source-label"></span>
+              <div class="receipt-total">
+                <span>Wallet SOL change</span
+                ><strong id="receipt-delta"></strong>
+              </div>
+              <dl class="receipt-lines">
+                <div>
+                  <dt>Wallet network fee</dt>
+                  <dd id="receipt-fee"></dd>
+                </div>
+                <div>
+                  <dt>Unexplained change</dt>
+                  <dd id="receipt-residual"></dd>
+                </div>
+              </dl>
+              <p class="subtle">
+                A zero unexplained amount does not prove complete attribution.
+                This is a single transaction, not trading PnL.
+              </p>
+              <div class="secondary-actions">
+                <button id="receipt-json" class="secondary" type="button">
+                  Download JSON</button
+                ><button id="receipt-html" class="secondary" type="button">
+                  Download HTML
+                </button>
+              </div>
+              <details class="evidence">
+                <summary>Read receipt evidence</summary>
+                <pre id="receipt-evidence"></pre>
+              </details>
+            </div>
+            <div class="receipt-guide">
+              <h3>A receipt that leaves room for “unknown.”</h3>
+              <p>
+                Network fees are counted once. Supported native transfers are
+                shown as observed flows. Unsupported refunds and wrapped-SOL
+                movements may remain unexplained.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+      <footer>
+        <span
+          >Built in the open by
+          <a
+            href="https://github.com/Positano777"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Positano777</a
+          ></span
+        >
+        <div>
+          <a
+            href="https://github.com/Positano777/memecoin-launch-handbook"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Launch handbook</a
+          ><a href="licenses.txt">Third-party licenses</a>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

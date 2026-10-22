@@ -11,7 +11,7 @@ export class ReadRpc {
   constructor(
     endpoint = process.env.SOLANA_RPC_URL ||
       "https://api.mainnet-beta.solana.com",
-    fetcher = fetch,
+    fetcher = (...args) => fetch(...args),
   ) {
     let url;
     try {

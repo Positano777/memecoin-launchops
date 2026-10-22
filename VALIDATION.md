@@ -2,6 +2,14 @@
 
 Reviewed 2026-10-22 under Node.js 22.18.0 on Windows.
 
+## Browser milestone: v0.3.0-preview.1
+
+All 98 offline tests pass, including five new dashboard cases for exact values, browser SHA-256 compatibility, imported mint binding, coherent reads and stale-slot rejection. A Chrome browser check covers desktop/mobile layouts, visible accounting limits, file size and malformed input, exported report and receipt files, keyboard tabs, imported receipts, invalid wallets/mints, mocked network identity/account reads, provider failure, and in-flight/stale report suppression. The only console error in the mocked check is its intentionally injected HTTP 503. Initial load has no external data requests.
+
+Browser testing found and fixed an unbound native-fetch call that Node tests did not expose. A real public-mainnet browser attempt received HTTP 403 from the canonical public RPC; no successful live browser observation is claimed. Earlier CLI smoke observations below are independent of browser access. Imported/demo flows remain usable without that provider.
+
+The checked-in static bundle was built with existing esbuild 0.28.2 and runtime packages, without installing new packages or running install hooks. Asset hashes and retained dependency license texts are included. Credential scanning is not malware scanning and does not establish machine cleanliness. A separate owner-private Sites preview is prepared from this source; publication status is reported by the release handoff.
+
 ## Creator-fee milestone: v0.2.0-preview.1
 
 All 93 tests pass: the original 75 plus 18 fee cases. New cases cover creator-wide versus mint-specific scope, exact large counters, SOL/USDC vaults, unknown trailing fields, holder/shared routing, zero counters, missing/frozen/mismatched vaults, account binding, coherent two-stage reads, changed recipients, stale slots, redaction, offline CLI and overwrite refusal. No signing or claim was tested or performed.
@@ -17,7 +25,7 @@ The refreshed dependency audit still reports four moderate affected packages, ze
 - Tests make no live RPC calls. Temporary files are isolated and removed by the tests.
 - The inherited receipt runtime is copied from its pinned tested preview; its existing 37 tests were previously run upstream. LaunchOps adds integration/hash checks, not a claim to have reimplemented its accounting.
 
-Run `npm ci --ignore-scripts`, then `npm test`. There is no TypeScript compile or application build step. Source is executable ESM. The package lock pins 57 installed dependencies; lifecycle scripts were not executed.
+Run `npm ci --ignore-scripts`, then `npm test`. The CLI source is executable ESM without compilation. The optional browser bundle has a separate documented build. The package lock pins 57 installed dependencies; lifecycle scripts were not executed.
 
 ## Read-only mainnet smoke checks
 
@@ -43,4 +51,4 @@ See SECURITY.md for four moderate affected-package reports, no reported high/cri
 
 ## Distribution
 
-This preview is source plus CLI documentation and examples. No hosted site, background service, notification account, signing adapter, token, or trade was deployed. Release status remains prerelease.
+The initial CLI milestone shipped source, documentation and examples. The browser milestone adds static dashboard assets; no background service, notification account, signing adapter, token, or trade was deployed. Release status remains prerelease.

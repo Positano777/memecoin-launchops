@@ -4,7 +4,7 @@
 
 An independent MIT community project by [Positano777](https://x.com/positano777), connecting the [launch handbook](https://github.com/Positano777/memecoin-launch-handbook), compatibility checks, and [transaction receipts](https://github.com/Positano777/pumpfun-community-tools/tree/main/receipt).
 
-**Developer preview.** This release inspects public plans, checks supplied creation transactions, performs RPC simulations, and observes public accounts. It does not sign, broadcast, create a coin, buy/sell, or deliver messages to external services. No hosted service is deployed. It is not affiliated with Pump or Solana.
+**Developer preview.** This release inspects public plans, checks supplied creation transactions, performs RPC simulations, and observes public accounts. It does not sign, broadcast, create a coin, buy/sell, or deliver messages to external services. A browser dashboard is included; its hosted preview starts owner-private. It is not affiliated with Pump or Solana.
 
 | Command | Useful result | Coverage |
 |---|---|---|
@@ -23,6 +23,12 @@ flowchart LR
   W --> E[Persistent JSONL change events]
   J[Saved transaction or signature] --> R[receipt: JSON and HTML]
 ```
+
+## Browser dashboard
+
+[Dashboard source and setup](dashboard/README.md) provides launch lifecycle observations, separate waiting/vault fee balances, local account imports, and transaction receipts. Serve the checked-in `dashboard/dist/` without installing dependencies. Demo data is labeled synthetic. Live public RPC can deny browser requests; imports work locally. The dashboard does not execute launches or claims.
+
+![LaunchOps desktop dashboard with synthetic data](docs/dashboard-preview.png)
 
 ## Start offline
 
