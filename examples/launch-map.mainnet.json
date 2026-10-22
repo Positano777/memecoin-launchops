@@ -1,0 +1,51 @@
+{
+  "schema": "positano.launch-evidence.v1",
+  "mint": "9U32MnGjepKLPFwGPgJUppiNhFemGa3JSho329qWpump",
+  "scannedAt": 1792624779722,
+  "sourceEngine": "RugHawk community fork",
+  "syntheticExample": false,
+  "coverage": {
+    "creation": "located",
+    "launchBlock": "complete",
+    "launchBlockDetails": {
+      "slot": 455522726,
+      "source": "getBlock",
+      "relevantTransactions": 0,
+      "inspectedTransactions": 0,
+      "reasons": []
+    },
+    "warnings": [
+      "Scan warning (raw diagnostic omitted)"
+    ]
+  },
+  "creation": {
+    "slot": 455522726,
+    "blockTime": 1791693679,
+    "source": {
+      "signature": "3DsFpAxFbw8rHXRK6jyT69PZQfnJhV74pBP1JmEV4tjb3caBKMnh6PJw3qgrvmB7f9FFW92f8kMNwWWG1auiF4cr",
+      "url": "https://solscan.io/tx/3DsFpAxFbw8rHXRK6jyT69PZQfnJhV74pBP1JmEV4tjb3caBKMnh6PJw3qgrvmB7f9FFW92f8kMNwWWG1auiF4cr"
+    },
+    "feePayer": "2CRb7yxm69SGkxXkKsyfUir9Cjh8aWNQmpBDNYXDmaFC",
+    "feePayerIsCreator": "unverified"
+  },
+  "launchSlotObservations": {
+    "netAcquiringFeePayers": [],
+    "summedPositiveDeltasPctOfSupply": 0,
+    "transactionCount": 0,
+    "transactions": [],
+    "purchasesVerified": false,
+    "coordination": "unverified",
+    "jitoBundleMembership": "unverified"
+  },
+  "feePayerOutflows": [],
+  "limitations": [
+    "Imported evidence is not independently verified blockchain data.",
+    "The upstream launch-slot sampler excludes the creation transaction itself; its initial token allocations are not mapped.",
+    "Positive fee-payer deltas can include transfers and repeated circulation. They are not unique supply held, purchases or current whale holdings.",
+    "Dashed map lines associate a token with observations; they do not show wallet-to-wallet transfers or funding.",
+    "Same-slot activity does not prove common control, insider access or Jito bundle membership.",
+    "Creation fee payer and token creator are different roles; their identity relationship is unverified.",
+    "Reported fee-payer outflows use upstream heuristics. This viewer does not independently decode sales, transfers, locks or burns.",
+    "No complete wallet history, current balances, multi-hop trace, live monitoring or full launch-to-exit replay is established."
+  ]
+}

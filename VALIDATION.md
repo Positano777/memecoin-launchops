@@ -2,6 +2,14 @@
 
 Reviewed 2026-10-22 under Node.js 22.18.0 on Windows.
 
+## Launch-map milestone: v0.5.0-preview.1
+
+All 117 offline tests pass (105 previous plus 12 launch-map cases). New checks cover known-field projection/redaction, URL rebuilding, wallet aggregation, duplicate suppression and conflicting rows, false verification claims, repeated gains above 100%, coverage/sample contradictions, legacy unknown/no-row evidence, bounded invalid inputs, reuse of the saved-scan formatter, empty launch/mainnet case, pinned MIT exporter hashes and offline CLI overwrite protection.
+
+Chrome checks passed for map/list selection and keyboard focus, public-address filtering, all synthetic scenarios, saved mainnet zero-observation case, JSON and PNG exports, hostile/oversized/invalid inputs, unknown coverage, four-tab navigation and desktop/mobile without page overflow. No external requests or uncaught page errors occurred in the map flow; its console had zero errors/warnings. The downloaded PNG is exactly 1200×630 and the evidence preserves the synthetic marker. Existing lifecycle/RPC, receipt, snapshot and plan browser regression paths also passed before release.
+
+A separate mainnet read re-established the saved creation transaction at slot 455522726 and zero additional relevant transactions according to the upstream sampler's relevance rules, with no missing transaction metadata. See [precise interpretation and mainnet evidence](docs/LAUNCH_MAP.md). No live whale tracking, holder concentration, full interval backfill, complete buyer attribution, transfer-path map or independently decoded exit history is claimed. No new dependencies or install hooks were used. The map is a separate reuse of the pinned MIT launch-evidence formatter; its license is bundled with the static app.
+
 ## Workflow milestone: v0.4.0-preview.1
 
 All 105 offline tests pass (98 previous plus seven workflow tests). Added coverage includes snapshot field projection/redaction, exact lamport preservation and unsafe-number rejection, malformed/missing accounts, CLI snapshot export and overwrite refusal, mutually exclusive flags, failure with no output file, public-plan download round-trips, unsupported/secret-bearing inputs, and holder-reward warning preservation.

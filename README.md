@@ -8,6 +8,7 @@ An independent MIT community project by [Positano777](https://x.com/positano777)
 
 | Command | Useful result | Coverage |
 |---|---|---|
+| `launch-map` | Portable launch-slot observation map input with canonical transaction links and explicit coverage | Saved community token scans/evidence only; no live whale tracking |
 | `doctor` | Find invalid settings; compare a supplied create transaction with the plan; optionally simulate it | Mainnet Pump `create_v2`, SOL/USDC quotes, creation-only legacy or v0 without lookup tables |
 | `watch` | JSONL events when observed lifecycle changes, with persistent state and retryable pending events | Point-in-time RPC polling of a mint, curve, and canonical SOL/USDC pools |
 | `receipt` | Wallet SOL change, network fee, supported transfers, token changes, unexplained residual | Pinned reuse of our existing conservative receipt runtime |
@@ -97,6 +98,16 @@ node bin/launchops.mjs fees --mint 2HfZPEuc9b8ujLaJ3HEXFPhSCQQvmQBB92W5HegvTNey 
 The new `fees` command separates this mint's waiting curve/pool counters from creator-wide vault balances. It never adds those vault balances into the coin's earnings. Native vault SOL is a gross balance including rent; token vault amounts use integer raw quote units. Missing fee fields remain unknown. The same creator can receive fees from many coins.
 
 The live reader discovers recipient addresses, then re-fetches the base accounts and required vaults in one coherent confirmed batch. Recipient/quote changes or regressing slots cause refusal. Holder rewards and program/shared recipients are marked for route review. The report describes conditional sweep-before-claim/distribution steps; it neither verifies entitlement nor builds, signs, or submits a claim. See [fee-report details](docs/FEES.md).
+
+## Launch map
+
+Open **Launch map** in the dashboard to explore supplied launch-slot gain evidence, select observed fee payers, inspect source transactions and export a branded PNG or projected JSON. It reuses our existing MIT evidence exporter. Example data is labeled synthetic; the saved mainnet example illustrates zero mapped observations.
+
+The map shows positive fee-payer deltas, not verified buys or current whale holdings. Dashed edges are observation links, not transfers or common ownership. Creation-transaction allocations and complete launch-to-exit history are not mapped yet. See [map coverage and roadmap](docs/LAUNCH_MAP.md).
+
+```sh
+node bin/launchops.mjs launch-map --file examples/launch-map.synthetic.json --out new-map-evidence.json
+```
 
 ## Bring live accounts into the browser
 

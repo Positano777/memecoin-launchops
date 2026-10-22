@@ -76,6 +76,16 @@
         >
           Launch plan
         </button>
+        <button
+          id="map-tab"
+          data-tab="map"
+          role="tab"
+          aria-controls="map-panel"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          Launch map
+        </button>
       </div>
       <section
         id="overview-panel"
@@ -533,6 +543,193 @@ node bin/launchops.mjs fees --mint PUBLIC_MINT --snapshot-out accounts.json</pre
             </div>
           </section>
         </div>
+      </section>
+      <section
+        id="map-panel"
+        data-panel="map"
+        role="tabpanel"
+        aria-labelledby="map-tab"
+        hidden
+      >
+        <div class="map-heading">
+          <div>
+            <p class="section-label">The launch block, with receipts</p>
+            <h2>Start with what the evidence shows.</h2>
+            <p class="subtle">
+              Explore supplied launch-slot observations. Follow each finding to
+              its transaction.
+            </p>
+          </div>
+          <div class="map-input-actions">
+            <label class="visually-hidden" for="map-example"
+              >Example scenario</label
+            ><select id="map-example">
+              <option value="uneven">Uneven gains example</option>
+              <option value="distributed">Distributed gains example</option>
+              <option value="partial">Incomplete coverage example</option>
+              <option value="mainnet">
+                Saved mainnet case (no mapped gains)
+              </option></select
+            ><button id="map-demo" class="secondary" type="button">
+              Try map example</button
+            ><button id="map-import" class="primary" type="button">
+              Import launch evidence</button
+            ><input
+              id="map-file"
+              type="file"
+              accept=".json,application/json"
+              hidden
+            />
+          </div>
+        </div>
+        <p id="map-error" class="error" role="alert" hidden></p>
+        <div id="map-result">
+          <div class="map-report-bar">
+            <span id="map-source" class="source-label"></span>
+            <div>
+              <button id="map-json" class="text-button" type="button">
+                Download evidence</button
+              ><button id="map-png" class="secondary" type="button">
+                Download share card
+              </button>
+            </div>
+          </div>
+          <p id="map-example-note" class="example-note">
+            Synthetic example: invented addresses, signatures and percentages.
+            Not a real launch.
+          </p>
+          <div class="map-coverage">
+            <div>
+              <span class="section-label">Launch-slot RPC coverage</span
+              ><strong id="map-coverage-status"></strong>
+              <p id="map-coverage-detail"></p>
+            </div>
+            <div>
+              <span class="section-label">Creation slot</span
+              ><strong id="map-slot"></strong
+              ><a
+                id="map-creation-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Open creation transaction</a
+              >
+            </div>
+            <div>
+              <span class="section-label">Mapped observations</span
+              ><strong id="map-count"></strong>
+              <p id="map-count-note"></p>
+            </div>
+          </div>
+          <p id="map-coverage-warning" class="map-warning"></p>
+          <div class="map-workspace">
+            <section class="map-canvas-panel">
+              <div class="section-top">
+                <h3>Token and observed fee payers</h3>
+                <span id="map-node-note" class="subtle"></span>
+              </div>
+              <svg
+                id="launch-graph"
+                viewBox="0 0 720 420"
+                role="group"
+                aria-labelledby="map-graph-title map-graph-desc"
+              >
+                <title id="map-graph-title">Launch-slot observation map</title>
+                <desc id="map-graph-desc">
+                  Dashed lines associate the token with fee-payer gain
+                  observations. They do not represent funding or token
+                  transfers.
+                </desc>
+                <g id="map-lines"></g>
+                <g id="map-nodes"></g>
+              </svg>
+              <p class="map-legend">
+                <span aria-hidden="true">┄┄</span> Observation link, not a
+                transfer or ownership connection. Circle size reflects share of
+                mapped positive gains, not supply held.
+              </p>
+              <p id="map-no-observations" class="subtle" hidden>
+                No transaction-backed positive deltas were supplied. This does
+                not establish an empty or safe launch.
+              </p>
+            </section>
+            <section class="map-wallet-panel">
+              <p class="section-label">Selected observation group</p>
+              <h3 id="map-wallet-heading">Choose an observed fee payer</h3>
+              <p id="map-wallet-address" class="map-address"></p>
+              <p id="map-wallet-stats" class="subtle"></p>
+              <p class="map-warning">
+                Fee payer is an attribution heuristic. A positive balance change
+                does not prove a purchase, insider status or common control.
+              </p>
+              <div id="map-wallet-transactions"></div>
+              <p id="map-wallet-empty" class="subtle">
+                Use a map circle or a wallet button below to inspect the
+                supplied transactions.
+              </p>
+            </section>
+          </div>
+          <section class="map-table-panel">
+            <div class="section-top">
+              <div>
+                <h3>Explore the supplied gain evidence</h3>
+                <p class="subtle">
+                  Percentages are upstream approximations. Repeat circulation
+                  can push summed gains above 100%.
+                </p>
+              </div>
+              <div>
+                <label for="map-search">Find a public address</label
+                ><input
+                  id="map-search"
+                  type="search"
+                  maxlength="44"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="Filter observed fee payers"
+                />
+              </div>
+            </div>
+            <div id="map-wallet-list" class="map-wallet-list"></div>
+            <p id="map-list-note" class="subtle"></p>
+          </section>
+          <section class="map-outflow-panel">
+            <h3>Reported creation fee-payer outflows</h3>
+            <p class="subtle">
+              These are supplied upstream classifications, not independently
+              decoded trades. They cover the creation fee payer only, not the
+              mapped cohort or a complete launch-to-exit history.
+            </p>
+            <div id="map-outflows"></div>
+          </section>
+          <details class="evidence">
+            <summary>Coverage, identity and reproducible evidence</summary>
+            <p>Public mint <code id="map-mint"></code></p>
+            <p id="map-identity"></p>
+            <ul id="map-limits"></ul>
+            <pre id="map-evidence"></pre>
+          </details>
+        </div>
+        <details class="snapshot-guide map-import-guide">
+          <summary>How to prepare an evidence file</summary>
+          <p>
+            Import a <code>positano.launch-evidence.v1</code> JSON export, or a
+            saved token scan from our community-tools fork. Maximum file size 5
+            MB. Files are processed locally; this viewer makes no history
+            requests.
+          </p>
+          <pre>node evidence/cli.mjs scan.json evidence.json</pre>
+          <p>
+            The exporter is in
+            <a
+              href="https://github.com/Positano777/pumpfun-community-tools/tree/main/evidence"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Pumpfun Community Tools</a
+            >. Older scans can lack transaction-level evidence and remain
+            unknown. This release does not fetch arbitrary mint history,
+            identify whale ownership, or monitor future exits.
+          </p>
+        </details>
       </section>
       <footer>
         <span

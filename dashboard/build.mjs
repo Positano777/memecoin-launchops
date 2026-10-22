@@ -86,6 +86,7 @@ for (const [name, { folder, info }] of [...packages].sort()) {
 for (const file of [
   "LICENSE",
   "vendor/receipt/LICENSE",
+  "vendor/launch-evidence/LICENSE",
   "vendor/receipt/vendor/VTX-Labs-LICENSE",
   "vendor/receipt/vendor/bs58-LICENSE",
   "vendor/receipt/vendor/base-x-LICENSE",
@@ -97,7 +98,13 @@ for (const file of [
     (await readFile(resolve(root, file), "utf8"));
 await writeFile(resolve(out, "licenses.txt"), licenses.replace(/\r\n/g, "\n"));
 const hashes = {};
-for (const file of ["app.js", "index.html", "styles.css", "licenses.txt", "favicon.svg"])
+for (const file of [
+  "app.js",
+  "index.html",
+  "styles.css",
+  "licenses.txt",
+  "favicon.svg",
+])
   hashes[file] = createHash("sha256")
     .update(await readFile(resolve(out, file)))
     .digest("hex");

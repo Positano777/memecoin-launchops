@@ -43,3 +43,7 @@ Lifecycle is a point-in-time supported-account observation. Current-step highlig
 Fill the public settings form or import an existing plan JSON (maximum 64 KiB). The existing CLI doctor engine runs locally without RPC or metadata fetches. Blocking errors disable plan downloads; warnings remain visible after supported checks pass. Download either a redacted check report or a validated, complete public plan suitable for the CLI doctor. Editing the form clears stale results. No unsigned transaction construction or simulation is implemented in this tab. The example contains invented public addresses and metadata; do not fund it.
 
 ![Launch plan example with offline warning](../docs/launch-plan-preview.png)
+
+## Launch map tab
+
+Explore saved launch evidence with interactive selection, address filtering and transaction links. Download projected JSON or a branded PNG retaining coverage and interpretation limits. Source URLs and arbitrary imported prose are never trusted. No RPC is called by this tab. See [launch-map documentation](../docs/LAUNCH_MAP.md) for formats, mainnet validation, attribution and the distinction between gross gains and holdings. This is the first launch-slot evidence viewer, not the planned full whale/exit tracker.

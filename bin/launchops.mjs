@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { normalizeLaunchEvidence } from "../src/launch-map.mjs";
 import { readFile, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -23,6 +24,7 @@ import {
 } from "../src/state.mjs";
 export const HELP = `Memecoin LaunchOps / developer preview
 
+  node bin/launchops.mjs launch-map --file SCAN_OR_EVIDENCE.json [--out NEW.json]
   node bin/launchops.mjs doctor --plan PLAN.json [--transaction UNSIGNED.base64] [--out NEW.json]
   node bin/launchops.mjs watch --mint PUBLIC_MINT [--state FILE] [--polls N | --follow] [--interval SECONDS]
   node bin/launchops.mjs watch --mint PUBLIC_MINT --snapshot ACCOUNTS.json
@@ -98,6 +100,17 @@ export async function run(
   if (!command || command === "--help" || command === "help")
     return { text: HELP, exitCode: 0 };
   if (command === "receipt") return { text: await receipt(rest), exitCode: 0 };
+  if (command === "launch-map") {
+    const o = options(rest, new Set(["--file", "--out"]));
+    requireThat(
+      o["--file"],
+      "Provide --file with saved launch evidence or a token scan.",
+    );
+    const evidence = normalizeLaunchEvidence(
+      parseRpcJson(await input(o["--file"])),
+    );
+    return { text: await output(evidence, o["--out"]), exitCode: 0 };
+  }
   if (command === "fees") {
     const o = options(
       rest,

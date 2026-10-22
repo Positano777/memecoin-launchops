@@ -1,3 +1,4 @@
+import { setupLaunchMap } from "./launch-map.mjs";
 import { reviewPlan } from "./plan.mjs";
 import examplePlan from "../examples/plan.synthetic.json";
 import { inspectMint, fromSnapshot, formatRaw, STATUS } from "./model.mjs";
@@ -401,3 +402,5 @@ $("plan-download").addEventListener("click", () => {
   if (checkedPlan)
     download("launch-plan.json", JSON.stringify(checkedPlan, null, 2) + "\n");
 });
+
+setupLaunchMap();
