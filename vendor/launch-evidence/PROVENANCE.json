@@ -4,7 +4,8 @@
   "upstream": "https://github.com/bobvasic/rughawk",
   "license": "MIT",
   "filesSha256": {
-    "launch-evidence.mjs": "012364aa3b9d4d66064ac988f5886f74e1f0d453038cf9af0765ff0380d72b52",
-    "LICENSE": "8d5ec26929df9bdad4daa9a49e8e6b4a55ab9104b2ae33ae61a889566fdb34c1"
-  }
+    "launch-evidence.mjs": "0c6375261bcf4cb8bbe4ad0a4729a0f13c15141f3bcd4b6b7241a85659351e8f",
+    "LICENSE": "117c2aac98f12e140300d76b49fe07c5e2bc42070e63ebf0990b6994364e3421"
+  },
+  "textNormalization": "LF line endings; runtime unchanged"
 }
