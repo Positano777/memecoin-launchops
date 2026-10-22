@@ -1,3 +1,5 @@
+import { reviewPlan } from "./plan.mjs";
+import examplePlan from "../examples/plan.synthetic.json";
 import { inspectMint, fromSnapshot, formatRaw, STATUS } from "./model.mjs";
 import { parseRpcJson, makeReceipt, LIMIT } from "../vendor/receipt/core.mjs";
 import { receiptHtml } from "../vendor/receipt/report.mjs";
@@ -259,3 +261,143 @@ $("receipt-html").addEventListener("click", () => {
     download("transaction-receipt.html", receiptHtml(receipt), "text/html");
 });
 render(fromSnapshot(exampleAccounts.mint, exampleAccounts, "synthetic"));
+
+// Offline launch-plan checks reuse the CLI engine; no simulation or RPC here.
+const planFields = {
+  name: "plan-name",
+  symbol: "plan-symbol",
+  metadataUri: "plan-uri",
+  creator: "plan-creator",
+  payer: "plan-payer",
+  mint: "plan-mint",
+  quoteAsset: "plan-quote",
+  budgetLamports: "plan-budget",
+};
+let checkedPlan = null,
+  planReport = null,
+  planExample = false;
+function clearPlan() {
+  checkedPlan = null;
+  planReport = null;
+  $("plan-result").hidden = true;
+  $("plan-empty").hidden = false;
+  $("plan-error").hidden = true;
+  $("plan-download").disabled = true;
+}
+function renderPlan(input, source) {
+  const value = reviewPlan(input);
+  checkedPlan = value.plan;
+  planReport = { ...value.report, source: { kind: source } };
+  $("plan-empty").hidden = true;
+  $("plan-result").hidden = false;
+  $("plan-error").hidden = true;
+  text(
+    "plan-source",
+    source === "synthetic_example"
+      ? "Synthetic example"
+      : source === "imported_plan"
+        ? "Imported public plan"
+        : "Form settings",
+  );
+  const blocked = planReport.status === "blocked",
+    errors = planReport.findings.filter((f) => f.severity === "error").length;
+  text("plan-status", blocked ? "Changes needed" : "Supported settings passed");
+  text(
+    "plan-summary",
+    blocked
+      ? `${errors} blocking ${errors === 1 ? "error" : "errors"}. Review the findings before exporting a plan.`
+      : "The supported offline checks passed. Review the warnings; no simulation was performed.",
+  );
+  $("plan-findings").replaceChildren();
+  for (const finding of planReport.findings) {
+    const li = document.createElement("li"),
+      label = document.createElement("strong"),
+      message = document.createElement("span");
+    li.dataset.severity = finding.severity;
+    label.textContent =
+      finding.severity === "error" ? "Blocking error" : "Warning";
+    message.textContent = finding.message;
+    li.append(label, message);
+    $("plan-findings").append(li);
+  }
+  $("plan-download").disabled = !checkedPlan;
+  text(
+    "plan-download-note",
+    blocked
+      ? "Plan download is disabled while blocking errors remain. The check report omits unsupported and unvalidated input."
+      : source === "synthetic_example"
+        ? "Example addresses and metadata are invented. Do not fund these addresses or treat this example as a launch."
+        : "Download the validated public plan for your own workflow. Editing the form clears this report.",
+  );
+  text("plan-evidence", JSON.stringify(planReport, null, 2));
+}
+$("plan-form").addEventListener("input", () => {
+  planExample = false;
+  clearPlan();
+});
+$("plan-form").addEventListener("change", (e) => {
+  if (e.target.id !== "plan-file") {
+    planExample = false;
+    clearPlan();
+  }
+});
+$("plan-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const plan = {
+    schemaVersion: 1,
+    network: "mainnet-beta",
+    route: "pumpfun",
+    tokenProgram: "token2022",
+    mayhemMode: false,
+    cashback: false,
+    creatorFeeBps: 0,
+    holderRewards: $("plan-holder").checked,
+  };
+  for (const [key, id] of Object.entries(planFields)) plan[key] = $(id).value;
+  renderPlan(plan, planExample ? "synthetic_example" : "form_settings");
+});
+$("plan-demo").addEventListener("click", () => {
+  for (const [key, id] of Object.entries(planFields))
+    $(id).value = examplePlan[key];
+  $("plan-holder").checked = examplePlan.holderRewards;
+  planExample = true;
+  renderPlan(examplePlan, "synthetic_example");
+});
+$("plan-import").addEventListener("click", () => $("plan-file").click());
+$("plan-file").addEventListener("change", async () => {
+  const file = $("plan-file").files[0];
+  if (!file) return;
+  clearPlan();
+  try {
+    if (file.size > 65536) throw Error();
+    const input = parseRpcJson(await file.text());
+    renderPlan(input, "imported_plan");
+    $("plan-form").reset();
+    planExample = false;
+    if (checkedPlan) {
+      for (const [key, id] of Object.entries(planFields))
+        $(id).value = checkedPlan[key];
+      $("plan-holder").checked = checkedPlan.holderRewards;
+    }
+  } catch {
+    clearPlan();
+    $("plan-error").hidden = false;
+    text(
+      "plan-error",
+      "Could not read this public plan. Use a JSON plan object no larger than 64 KiB. Do not include keys or provider credentials.",
+    );
+  } finally {
+    $("plan-file").value = "";
+  }
+});
+$("plan-report").addEventListener("click", () => {
+  if (planReport)
+    download(
+      "launch-plan-check.json",
+      JSON.stringify(planReport, null, 2) + "\n",
+    );
+});
+$("plan-download").addEventListener("click", () => {
+  if (checkedPlan)
+    download("launch-plan.json", JSON.stringify(checkedPlan, null, 2) + "\n");
+});

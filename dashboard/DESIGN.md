@@ -18,3 +18,5 @@ Mint inspector | source / download
 ```
 
 The first view is explicitly synthetic. Live requests clear stale results; uploaded snapshots remain unverified. No prices, token promotion, wallet-connect controls, or implied completed milestones. Responsive stacking preserves the accounting explanation and downloadable evidence.
+
+Next milestone: preserve the approved logo, palette and layout. Add a third launch-plan tab with a form on the left and findings on the right; warnings remain visible even when supported checks pass. Add an expandable snapshot guide under the existing inspector so provider setup stays outside the normal browser flow.

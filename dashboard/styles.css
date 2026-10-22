@@ -832,3 +832,141 @@ footer a {
     transition: none !important;
   }
 }
+
+.snapshot-guide {
+  border-top: 1px solid var(--line, #d7e0da);
+  margin-top: 20px;
+  padding-top: 16px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.snapshot-guide summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.snapshot-guide pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  background: #f1f4f1;
+  padding: 10px;
+  border-radius: 6px;
+}
+.snapshot-guide p {
+  margin: 10px 0;
+}
+.plan-layout {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+}
+.plan-input,
+.plan-output {
+  padding: 28px;
+  background: #fff;
+  border: 1px solid #d7e0da;
+  border-radius: 12px;
+  min-width: 0;
+}
+.plan-input h2,
+.plan-output h2 {
+  font-size: 23px;
+  margin: 8px 0 14px;
+}
+.plan-input form {
+  margin-top: 22px;
+}
+.plan-input input[type="text"],
+.plan-input select {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 1px solid #c3d1c8;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fff;
+  font: inherit;
+  color: inherit;
+  margin-bottom: 12px;
+}
+.plan-input label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+.plan-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.plan-input .check-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 8px;
+}
+.check-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2d604b;
+}
+.plan-profile {
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 14px;
+  background: #f1f4f1;
+  border-radius: 6px;
+}
+.plan-input .primary {
+  width: 100%;
+  margin: 8px 0 10px;
+}
+.plan-findings {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+.plan-findings li {
+  border-bottom: 1px solid #e2e8e3;
+  padding: 14px 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.plan-findings strong {
+  display: block;
+  color: #88621e;
+  margin-bottom: 4px;
+}
+.plan-findings li[data-severity="error"] strong {
+  color: #a2392f;
+}
+.plan-output .secondary-actions {
+  grid-template-columns: 1fr;
+}
+.plan-output pre {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .tabs {
+    gap: 0;
+    justify-content: space-between;
+  }
+  .tabs button {
+    font-size: 12px;
+    padding: 12px 5px;
+  }
+  .plan-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .plan-input,
+  .plan-output {
+    padding: 22px 18px;
+  }
+  .plan-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

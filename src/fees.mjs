@@ -267,7 +267,7 @@ export function feeReport(mint, snapshot) {
     return { ...base, reason: "unusable_or_unsupported_fee_evidence" };
   }
 }
-export async function fetchFees(mint, rpc) {
+export async function fetchFeeSnapshot(mint, rpc) {
   const keys = baseAddresses(mint);
   await rpc.verifyMainnet();
   const first = await rpc.call("getMultipleAccounts", [
@@ -292,7 +292,57 @@ export async function fetchFees(mint, rpc) {
     JSON.stringify(feeAddresses(mint, result)) === JSON.stringify(addresses),
     "Fee recipient or quote changed during read. Retry with fresh evidence.",
   );
-  const report = feeReport(mint, { schemaVersion: 1, mint, addresses, result });
+  // Export only validated public account fields. Never retain provider envelopes,
+  // diagnostics, endpoint settings, or arbitrary properties from responses.
+  requireThat(
+    Array.isArray(result.value) && result.value.length === addresses.length,
+    "Incomplete account snapshot.",
+  );
+  const value = result.value.map((account, index) => {
+    if (index < 2) {
+      requireThat(account?.executable === true, "Expected executable program.");
+      return { executable: true };
+    }
+    if (account === null) return null;
+    requireThat(
+      account &&
+        typeof account.executable === "boolean" &&
+        Array.isArray(account.data) &&
+        account.data.length === 2 &&
+        account.data[1] === "base64" &&
+        typeof account.data[0] === "string" &&
+        account.data[0].length <= 32768,
+      "Unsupported snapshot account.",
+    );
+    const data = Buffer.from(account.data[0], "base64");
+    requireThat(
+      data.toString("base64") === account.data[0],
+      "Malformed snapshot data.",
+    );
+    const lamports =
+      typeof account.lamports === "number" &&
+      Number.isSafeInteger(account.lamports) &&
+      account.lamports >= 0
+        ? String(account.lamports)
+        : account.lamports;
+    uint(lamports);
+    return {
+      owner: publicKey(account.owner).toBase58(),
+      executable: account.executable,
+      lamports,
+      data: [account.data[0], "base64"],
+    };
+  });
+  return {
+    schemaVersion: 1,
+    mint,
+    addresses,
+    result: { context: { slot: result.context.slot }, value },
+  };
+}
+export async function fetchFees(mint, rpc) {
+  const snapshot = await fetchFeeSnapshot(mint, rpc);
+  const report = feeReport(mint, snapshot);
   report.coverage.genesisHashChecked = true;
   report.source.kind = "live_rpc";
   return report;

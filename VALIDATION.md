@@ -2,6 +2,14 @@
 
 Reviewed 2026-10-22 under Node.js 22.18.0 on Windows.
 
+## Workflow milestone: v0.4.0-preview.1
+
+All 105 offline tests pass (98 previous plus seven workflow tests). Added coverage includes snapshot field projection/redaction, exact lamport preservation and unsafe-number rejection, malformed/missing accounts, CLI snapshot export and overwrite refusal, mutually exclusive flags, failure with no output file, public-plan download round-trips, unsupported/secret-bearing inputs, and holder-reward warning preservation.
+
+A real CLI export for public mint `7LSsEoJGhLeZzGvDofTdNg7M3JttxQqGWNLo6vWMpump` produced nine public accounts at slot 459920222. Chrome imported the resulting 2,892-byte file and displayed `pool_observed` with imported/unverified coverage. This confirms a usable path when direct browser RPC is denied; it is one provider observation, not independent evidence of safety, claimability or full history.
+
+Chrome checks cover offline plan form/example/imports, blocked downloads, stale-report clearing after edits, holder warnings, redacted report and complete public-plan downloads, invalid/oversized inputs, three-tab keyboard navigation, and desktop/mobile layout without page overflow. The downloaded plan also passes the CLI doctor. These flows produced no external network requests or uncaught page errors; the browser console reported zero errors/warnings. The v0.3 regression browser script also passed for the receipt and mocked RPC paths. No dependency installation, wallet signing or transaction submission was needed.
+
 ## Browser milestone: v0.3.0-preview.1
 
 All 98 offline tests pass, including five new dashboard cases for exact values, browser SHA-256 compatibility, imported mint binding, coherent reads and stale-slot rejection. A Chrome browser check covers desktop/mobile layouts, visible accounting limits, file size and malformed input, exported report and receipt files, keyboard tabs, imported receipts, invalid wallets/mints, mocked network identity/account reads, provider failure, and in-flight/stale report suppression. The only console error in the mocked check is its intentionally injected HTTP 503. Initial load has no external data requests.

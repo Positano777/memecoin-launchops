@@ -26,7 +26,7 @@ flowchart LR
 
 ## Browser dashboard
 
-[Dashboard source and setup](dashboard/README.md) provides launch lifecycle observations, separate waiting/vault fee balances, local account imports, and transaction receipts. Serve the checked-in `dashboard/dist/` without installing dependencies. Demo data is labeled synthetic. Live public RPC can deny browser requests; imports work locally. The dashboard does not execute launches or claims.
+[Dashboard source and setup](dashboard/README.md) provides launch lifecycle observations, separate waiting/vault fee balances, local account imports, transaction receipts, and offline launch-plan checks. Serve the checked-in `dashboard/dist/` without installing dependencies. Demo data is labeled synthetic. Live public RPC can deny browser requests; imports work locally. The dashboard does not execute launches or claims. Use the **Launch plan** tab to check settings and export a public plan; use [CLI snapshots](docs/SNAPSHOTS.md) to import real account observations when browser RPC is blocked.
 
 ![LaunchOps desktop dashboard with synthetic data](docs/dashboard-preview.png)
 
@@ -97,6 +97,14 @@ node bin/launchops.mjs fees --mint 2HfZPEuc9b8ujLaJ3HEXFPhSCQQvmQBB92W5HegvTNey 
 The new `fees` command separates this mint's waiting curve/pool counters from creator-wide vault balances. It never adds those vault balances into the coin's earnings. Native vault SOL is a gross balance including rent; token vault amounts use integer raw quote units. Missing fee fields remain unknown. The same creator can receive fees from many coins.
 
 The live reader discovers recipient addresses, then re-fetches the base accounts and required vaults in one coherent confirmed batch. Recipient/quote changes or regressing slots cause refusal. Holder rewards and program/shared recipients are marked for route review. The report describes conditional sweep-before-claim/distribution steps; it neither verifies entitlement nor builds, signs, or submits a claim. See [fee-report details](docs/FEES.md).
+
+## Bring live accounts into the browser
+
+```sh
+node bin/launchops.mjs fees --mint PUBLIC_MINT --snapshot-out new-accounts.json
+```
+
+Then choose **Import accounts** in the dashboard. This reads the provider configured in your CLI environment and exports projected public account fields. Provider settings, URLs and diagnostics are not copied to the snapshot. `--snapshot-out` is separate from interpreted `--out` reports and refuses existing files. Imports remain unverified files; they do not prove network origin. See [snapshot coverage and limits](docs/SNAPSHOTS.md).
 
 ## Receipt: reuse the existing tool
 

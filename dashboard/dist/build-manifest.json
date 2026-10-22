@@ -17,7 +17,7 @@
       ]
     },
     {
-      "name": "@positano777/memecoin-launchops@0.3.0-preview.1",
+      "name": "@positano777/memecoin-launchops@0.4.0-preview.1",
       "license": "MIT",
       "licenseFiles": [
         "LICENSE"
@@ -158,10 +158,10 @@
     }
   ],
   "filesSha256": {
-    "app.js": "3cae89d5d3bfa9d4e9990d921f6591c01007d5ed72fc5d34b436be1f4118bdb8",
-    "index.html": "7969a5d56f33f46701c3f996797a489b6eda5ef74c760135ed6d0c2fbb85f8ca",
-    "styles.css": "b2d72d2fb3ad9e26ab372c124dbc92e2356ee545501daa4daf0c7bbcd483a472",
-    "licenses.txt": "0d535df0974dc04aaf9be80a83f9a9c77ef141247f8916fc7b1b5540f2dc9e36",
+    "app.js": "96d7335cc2a60bd0bfc43cb9b250cec404c26c0acd0ceb41a50df17f3b451a0b",
+    "index.html": "e8df3227a06ca4b58839613fcdbca2fee874df7037f40cf7e89e08399a4e90f5",
+    "styles.css": "5005c99a6e723583e6d3abcec1aaf33f28bef0ea0790f88e94bed3a8c9270df9",
+    "licenses.txt": "a9572f53e3696b4c95f40e8f45775cccaa817f9545be6f660054a0c784fc71ab",
     "favicon.svg": "928bb10d5a6ec6336fa00735dee83d8ecf8cee82e63fe18ea5b7deb04dec24ed"
   }
 }

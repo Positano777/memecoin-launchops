@@ -16,7 +16,9 @@ Open http://127.0.0.1:8877. Static hosting needs only `dashboard/dist/`. No serv
 
 Live inspection sends public account addresses to `https://api.mainnet-beta.solana.com`. This provider can deny browser traffic, rate-limit, or fail; the browser smoke attempt on 2026-10-22 received HTTP 403. Live availability is not guaranteed. This preview does not accept private RPC credentials or proxy provider requests.
 
-Import `examples/fees.synthetic.json` to try bound fee snapshots. For real data, use a LaunchOps fee snapshot with `schemaVersion`, `mint`, ordered `addresses`, and its raw `getMultipleAccounts` `result`. A raw six-account result is also accepted with the mint entered; it has partial vault coverage. Reports exported by this dashboard are projections, not re-importable raw account snapshots. Imported data is unverified and establishes neither network identity nor confirmation. Files stay in the tab; imports are limited to 5 MiB.
+Import `examples/fees.synthetic.json` to try bound fee snapshots. For real data, use a LaunchOps fee snapshot with `schemaVersion`, `mint`, ordered `addresses`, and its raw `getMultipleAccounts` `result`. Create a real snapshot with `node bin/launchops.mjs fees --mint PUBLIC_MINT --snapshot-out NEW_ACCOUNTS.json`, then import it. The CLI uses its own environment/provider; the browser never receives that configuration. See [snapshot export guide](../docs/SNAPSHOTS.md).
+
+A raw six-account result is also accepted with the mint entered; it has partial vault coverage. Reports exported by this dashboard are projections, not re-importable raw account snapshots. Imported data is unverified and establishes neither network identity nor confirmation. Files stay in the tab; imports are limited to 5 MiB.
 
 Receipt input is a saved `getTransaction` RPC JSON response with compiled encoding `json`, plus a public wallet appearing in it. The example and exact supported accounting limits come from the existing vendored receipt engine. Never put signing keys or secret-bearing RPC URLs in input files.
 
@@ -35,3 +37,9 @@ Alternatively omit the argument if esbuild 0.28.2 is installed in your own build
 ## Evidence limits
 
 Lifecycle is a point-in-time supported-account observation. Current-step highlighting does not establish past transitions or complete history. Creator-wide vault balances include other coins and native rent; they are separate from per-mint waiting counters and are not presented as claimable earnings. Recipient routes require review. No signing, broadcasting, trading, claim construction, scheduled monitoring, or launch execution is implemented in the dashboard.
+
+## Launch plan tab
+
+Fill the public settings form or import an existing plan JSON (maximum 64 KiB). The existing CLI doctor engine runs locally without RPC or metadata fetches. Blocking errors disable plan downloads; warnings remain visible after supported checks pass. Download either a redacted check report or a validated, complete public plan suitable for the CLI doctor. Editing the form clears stale results. No unsigned transaction construction or simulation is implemented in this tab. The example contains invented public addresses and metadata; do not fund it.
+
+![Launch plan example with offline warning](../docs/launch-plan-preview.png)

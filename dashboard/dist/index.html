@@ -66,6 +66,16 @@
         >
           Transaction receipt
         </button>
+        <button
+          id="plan-tab"
+          data-tab="plan"
+          role="tab"
+          aria-controls="plan-panel"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          Launch plan
+        </button>
       </div>
       <section
         id="overview-panel"
@@ -108,6 +118,28 @@
               RPC. Imported files stay in this browser tab. No keys, signing,
               analytics, or browser storage.
             </p>
+            <details class="snapshot-guide">
+              <summary>Bring your own account snapshot</summary>
+              <p>
+                Browser RPC blocked? From your LaunchOps checkout, export a
+                snapshot using the CLI and then choose
+                <strong>Import accounts</strong>.
+              </p>
+              <pre>
+node bin/launchops.mjs fees --mint PUBLIC_MINT --snapshot-out accounts.json</pre
+              >
+              <p>
+                Use a new filename. Set your provider through the CLI’s
+                <code>SOLANA_RPC_URL</code> environment variable; keep
+                credentials out of browser inputs and shared files.
+              </p>
+              <a
+                href="https://github.com/Positano777/memecoin-launchops/blob/main/docs/SNAPSHOTS.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Snapshot guide and limits</a
+              >
+            </details>
             <div class="scope-note">
               <h3>Evidence, with its limits</h3>
               <p>
@@ -324,6 +356,180 @@
                 shown as observed flows. Unsupported refunds and wrapped-SOL
                 movements may remain unexplained.
               </p>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section
+        id="plan-panel"
+        data-panel="plan"
+        role="tabpanel"
+        aria-labelledby="plan-tab"
+        hidden
+      >
+        <div class="plan-layout">
+          <section class="plan-input">
+            <p class="section-label">Before launch</p>
+            <h2>Check a public launch plan.</h2>
+            <p class="subtle">
+              Review supported settings locally. These checks do not establish
+              launch readiness or create a coin.
+            </p>
+            <form id="plan-form" novalidate>
+              <div class="plan-fields">
+                <div>
+                  <label for="plan-name">Token name</label
+                  ><input
+                    id="plan-name"
+                    type="text"
+                    maxlength="128"
+                    autocomplete="off"
+                    placeholder="Community token"
+                  />
+                </div>
+                <div>
+                  <label for="plan-symbol">Symbol</label
+                  ><input
+                    id="plan-symbol"
+                    type="text"
+                    maxlength="52"
+                    autocomplete="off"
+                    placeholder="SYMBOL"
+                  />
+                </div>
+              </div>
+              <label for="plan-uri">Public metadata URI</label
+              ><input
+                id="plan-uri"
+                type="text"
+                maxlength="1000"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="ipfs://…/metadata.json"
+              />
+              <label for="plan-creator">Creator public address</label
+              ><input
+                id="plan-creator"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <label for="plan-payer">Payer public address</label
+              ><input
+                id="plan-payer"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <label for="plan-mint">New mint public address</label
+              ><input
+                id="plan-mint"
+                type="text"
+                maxlength="100"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <p class="input-help">
+                Public addresses only. Generate and keep signing keys in your
+                own wallet workflow.
+              </p>
+              <div class="plan-fields">
+                <div>
+                  <label for="plan-quote">Quote asset</label
+                  ><select id="plan-quote">
+                    <option value="SOL">SOL</option>
+                    <option value="USDC">USDC</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="plan-budget">Budget in lamports</label
+                  ><input
+                    id="plan-budget"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="25"
+                    autocomplete="off"
+                    placeholder="10000000"
+                  />
+                </div>
+              </div>
+              <p class="input-help">
+                Budget is an integer SOL amount: 1 SOL = 1,000,000,000 lamports.
+                It is a planning value, not a verified balance or an enforced
+                spending cap, including with a USDC quote.
+              </p>
+              <label class="check-label" for="plan-holder"
+                ><input id="plan-holder" type="checkbox" />Enable holder rewards
+                in this plan</label
+              >
+              <p class="input-help">
+                Holder rewards change fee entitlement. Review the warning and
+                current platform availability.
+              </p>
+              <p class="plan-profile">
+                This form uses mainnet Pump create_v2, Token-2022, no
+                mayhem/cashback, and creatorFeeBps 0. That field does not mean
+                platform fees are zero.
+              </p>
+              <button class="primary" type="submit">Check plan</button>
+              <div class="secondary-actions">
+                <button id="plan-demo" class="secondary" type="button">
+                  Try plan example</button
+                ><button id="plan-import" class="secondary" type="button">
+                  Import plan JSON
+                </button>
+              </div>
+              <input
+                id="plan-file"
+                type="file"
+                accept=".json,application/json"
+                hidden
+              />
+            </form>
+            <p class="privacy">
+              Checks stay in this tab. No metadata fetch, wallet connection or
+              browser storage. Maximum imported plan size 64 KiB.
+            </p>
+          </section>
+          <section class="plan-output">
+            <div id="plan-empty">
+              <h2>Find problems before signing.</h2>
+              <p class="subtle">
+                Check the form or import an existing public plan. The report
+                separates blocking errors from warnings and leaves simulation
+                marked as not performed.
+              </p>
+            </div>
+            <p id="plan-error" class="error" role="alert" hidden></p>
+            <div id="plan-result" hidden aria-live="polite">
+              <span id="plan-source" class="source-label"></span>
+              <h2 id="plan-status"></h2>
+              <p id="plan-summary" class="subtle"></p>
+              <p class="example-note">
+                Offline settings check only. Metadata, balances,
+                deployed-program compatibility and launch readiness are not
+                verified.
+              </p>
+              <ul id="plan-findings" class="plan-findings"></ul>
+              <div class="secondary-actions">
+                <button id="plan-report" class="secondary" type="button">
+                  Download check report</button
+                ><button
+                  id="plan-download"
+                  class="secondary"
+                  type="button"
+                  disabled
+                >
+                  Download public plan
+                </button>
+              </div>
+              <p id="plan-download-note" class="input-help"></p>
+              <details class="evidence">
+                <summary>Read plan evidence</summary>
+                <pre id="plan-evidence"></pre>
+              </details>
             </div>
           </section>
         </div>

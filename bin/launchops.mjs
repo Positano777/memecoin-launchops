@@ -8,7 +8,7 @@ import { run as receipt } from "../vendor/receipt/cli.mjs";
 import { doctor, simulate } from "../src/doctor.mjs";
 import { publicKey, LaunchError, requireThat } from "../src/common.mjs";
 import { ReadRpc } from "../src/rpc.mjs";
-import { feeReport, fetchFees } from "../src/fees.mjs";
+import { feeReport, fetchFees, fetchFeeSnapshot } from "../src/fees.mjs";
 import {
   observe,
   fetchObservation,
@@ -28,6 +28,7 @@ export const HELP = `Memecoin LaunchOps / developer preview
   node bin/launchops.mjs watch --mint PUBLIC_MINT --snapshot ACCOUNTS.json
   node bin/launchops.mjs receipt --wallet PUBLIC_WALLET --file RPC.json [--out NEW_PREFIX]
   node bin/launchops.mjs fees --mint PUBLIC_MINT [--snapshot FEE_ACCOUNTS.json] [--out NEW.json]
+  node bin/launchops.mjs fees --mint PUBLIC_MINT --snapshot-out NEW_ACCOUNTS.json
 
 doctor is offline unless --transaction is supplied: it checks plan binding, then calls RPC simulation.
 watch defaults to one live poll; --follow continues until Ctrl+C. Outputs JSONL state-change events.
@@ -98,8 +99,22 @@ export async function run(
     return { text: HELP, exitCode: 0 };
   if (command === "receipt") return { text: await receipt(rest), exitCode: 0 };
   if (command === "fees") {
-    const o = options(rest, new Set(["--mint", "--snapshot", "--out"]));
+    const o = options(
+      rest,
+      new Set(["--mint", "--snapshot", "--out", "--snapshot-out"]),
+    );
     publicKey(o["--mint"]);
+    if (o["--snapshot-out"]) {
+      requireThat(
+        !o["--snapshot"] && !o["--out"],
+        "Use --snapshot-out alone with --mint; it exports a new live snapshot.",
+      );
+      const snapshot = await fetchFeeSnapshot(o["--mint"], rpcFactory());
+      return {
+        text: await output(snapshot, o["--snapshot-out"]),
+        exitCode: feeReport(o["--mint"], snapshot).status === "partial" ? 2 : 0,
+      };
+    }
     const report = o["--snapshot"]
       ? feeReport(o["--mint"], parseRpcJson(await input(o["--snapshot"])))
       : await fetchFees(o["--mint"], rpcFactory());
