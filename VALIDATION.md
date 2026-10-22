@@ -2,9 +2,17 @@
 
 Reviewed 2026-10-22 under Node.js 22.18.0 on Windows.
 
-## Automated checks
+## Creator-fee milestone: v0.2.0-preview.1
 
-- 75 tests pass: public plan validation/redaction, exact transaction binding, SOL/USDC optional accounts, legacy and v0 static messages, rejection of lookup tables/extra programs/trailing data, simulation success/failure projection, lifecycle evidence/unknown coverage, canonical pool identity, stale slots, restart/outbox delivery, corrupt state, locking, bounded RPC transport, CLI behavior, overwrite refusal, receipt integration and vendored file hashes.
+All 93 tests pass: the original 75 plus 18 fee cases. New cases cover creator-wide versus mint-specific scope, exact large counters, SOL/USDC vaults, unknown trailing fields, holder/shared routing, zero counters, missing/frozen/mismatched vaults, account binding, coherent two-stage reads, changed recipients, stale slots, redaction, offline CLI and overwrite refusal. No signing or claim was tested or performed.
+
+A read-only mainnet fee report for public example mint `7LSsEoJGhLeZzGvDofTdNg7M3JttxQqGWNLo6vWMpump` succeeded at slot 459905690: both curve/pool fee counters and distinct creator vault balances were readable. Its per-mint waiting total was 122360 raw SOL units at that instant. Vault balances were kept out of that total. This is one provider smoke test, not an independent income audit or a claimability test. Live USDC/holder/shared scenarios remain unverified; their regression cases are synthetic.
+
+The refreshed dependency audit still reports four moderate affected packages, zero high/critical. No dependency versions or RPC method permissions changed. See [fee coverage](docs/FEES.md) before using these reports.
+
+## Initial v0.1.0 preview checks
+
+- The initial 75 tests cover public plan validation/redaction, exact transaction binding, SOL/USDC optional accounts, legacy and v0 static messages, rejection of lookup tables/extra programs/trailing data, simulation success/failure projection, lifecycle evidence/unknown coverage, canonical pool identity, stale slots, restart/outbox delivery, corrupt state, locking, bounded RPC transport, CLI behavior, overwrite refusal, receipt integration and vendored file hashes.
 - The documented canonical pool derivation is checked against an independently specified public example, not only synthetic fixtures produced by our own helpers.
 - Tests make no live RPC calls. Temporary files are isolated and removed by the tests.
 - The inherited receipt runtime is copied from its pinned tested preview; its existing 37 tests were previously run upstream. LaunchOps adds integration/hash checks, not a claim to have reimplemented its accounting.

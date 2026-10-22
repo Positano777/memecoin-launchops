@@ -24,4 +24,6 @@ Current [PumpKit](https://raw.githubusercontent.com/nirholas/pumpkit/main/LICENS
 
 ## Network checks
 
+The fee planner additionally follows the pinned official [sweep](https://github.com/pump-fun/pump-public-docs/blob/639b87fb45c3adeffa6f7c4a1bf0cb85e392bf22/docs/instructions/SWEEP_FEES.md) and [collect](https://github.com/pump-fun/pump-public-docs/blob/639b87fb45c3adeffa6f7c4a1bf0cb85e392bf22/docs/instructions/COLLECT_CREATOR_FEE.md) specifications. Counter offsets were checked against the existing inspected package IDLs recorded in docs/abi-profile.json. This independently authored read-only report does not redistribute official SDK implementation code or certify a claim route.
+
 Canonical public mainnet RPC reported genesis hash `5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d`. All eight program IDs used by the profile were observed executable in one confirmed account batch at slot **459898272**. This confirms provider-reported account properties, not binary provenance or program safety. Read-only observation examples are described in VALIDATION.md.

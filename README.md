@@ -11,6 +11,7 @@ An independent MIT community project by [Positano777](https://x.com/positano777)
 | `doctor` | Find invalid settings; compare a supplied create transaction with the plan; optionally simulate it | Mainnet Pump `create_v2`, SOL/USDC quotes, creation-only legacy or v0 without lookup tables |
 | `watch` | JSONL events when observed lifecycle changes, with persistent state and retryable pending events | Point-in-time RPC polling of a mint, curve, and canonical SOL/USDC pools |
 | `receipt` | Wallet SOL change, network fee, supported transfers, token changes, unexplained residual | Pinned reuse of our existing conservative receipt runtime |
+| `fees` | Per-mint waiting counters, separate creator-wide vault balances, conditional sweep/claim route hints | Read-only SOL/USDC account snapshot; no claimability or lifetime-income calculation |
 
 ```mermaid
 flowchart LR
@@ -80,6 +81,17 @@ State is stored by mint in `.launchops/` unless `--state` is supplied. Unchanged
 
 Pending events are saved before stdout delivery and acknowledged after it. Delivery is **at least once**: a crash between delivery and acknowledgment may repeat the same ID. Consumers should deduplicate it. Atomic rename plus file fsync protects normal process restart; power-loss guarantees depend on the filesystem. One watcher holds an exclusive lock per state file. After a hard kill, confirm the old process stopped before removing its stale `.lock` file. Corrupt or foreign state is refused without overwriting it. No automatic historical replay or Telegram/webhook delivery is implemented.
 
+## Creator fee report
+
+```sh
+node bin/launchops.mjs fees --mint PUBLIC_MINT --out new-fee-report.json
+node bin/launchops.mjs fees --mint 2HfZPEuc9b8ujLaJ3HEXFPhSCQQvmQBB92W5HegvTNey --snapshot examples/fees.synthetic.json
+```
+
+The new `fees` command separates this mint's waiting curve/pool counters from creator-wide vault balances. It never adds those vault balances into the coin's earnings. Native vault SOL is a gross balance including rent; token vault amounts use integer raw quote units. Missing fee fields remain unknown. The same creator can receive fees from many coins.
+
+The live reader discovers recipient addresses, then re-fetches the base accounts and required vaults in one coherent confirmed batch. Recipient/quote changes or regressing slots cause refusal. Holder rewards and program/shared recipients are marked for route review. The report describes conditional sweep-before-claim/distribution steps; it neither verifies entitlement nor builds, signs, or submits a claim. See [fee-report details](docs/FEES.md).
+
 ## Receipt: reuse the existing tool
 
 ```sh
@@ -99,4 +111,4 @@ We reuse `@solana/web3.js` for public keys, PDA derivation and wire transaction 
 
 Useful contributions: sanitized failed-creation fixtures, independent account-layout checks, recorded migration observations with explicit coverage, and dependency improvements that preserve compatibility. Never submit private keys, recovery phrases, RPC credentials, or unsanitized logs. Reproduce with `npm test`; examples regenerate with `node scripts/make-examples.mjs`.
 
-Next candidates are creator fee sweep/claim planning, metadata-content checks, and a signing adapter reviewed separately. These are proposals, not implemented capabilities. MIT; retain the notices under `vendor/`.
+Next candidates are claim-transaction compatibility checks, metadata-content checks, and a signing adapter reviewed separately. These are proposals, not implemented capabilities. MIT; retain the notices under `vendor/`.

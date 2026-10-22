@@ -11,6 +11,8 @@ This is a read-only/simulation developer preview. No wallet connection, signing,
 
 ## Dependency audit, 2026-10-22
 
+The fee planner performs no transactions. Its discovery read is followed by a coherent base/recipient/vault read; changed recipient/quote bindings and stale slots are refused. Missing fields stay null, token vault owner/mint/authority/state are checked, and native vault lamports are labeled gross balances including rent. Shared/holder-reward entitlement is not verified. Public reports never label the creator-wide vault balance as this coin's lifetime income or claimable amount.
+
 `npm audit --omit=dev` reports **four affected packages at moderate severity**, zero high/critical: `@solana/web3.js`, `jayson`, `stream-json`, and `uuid`. The first two are dependency-chain reports. Underlying advisories:
 
 - [stream-json nested-filter complexity](https://github.com/advisories/GHSA-528h-pc64-c93x)
@@ -23,5 +25,7 @@ LaunchOps imports public-key and wire-parsing interfaces from web3.js. Its RPC w
 No dependency install hooks were run. The repository `.npmrc` disables scripts, and documented installation uses `npm ci --ignore-scripts`.
 
 ## Secret scans
+
+Credential scanning is not antivirus scanning. A passing secret scan does not establish that software, dependencies, or the host computer are malware-free.
 
 Scan tracked/proposed source and complete Git history with gitleaks and the included contextual Solana-key/phrase rules before releases. Exclude installed node_modules from the source snapshot; dependency audit is a separate check. Scanner success is not proof of absence or a full security audit. Do not paste suspected secrets into public issues; revoke an actual exposed credential first.
